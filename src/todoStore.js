@@ -27,12 +27,16 @@ class TodoStore {
 	}
 
 	@action addTodo(task) {
-		this.todos.push(
-			{
-				task: task,
-				completed: false
-			}
-		)
+		if(task) {
+			this.todos.push(
+				{
+					task: task,
+					completed: false
+				}
+			)
+		} else {
+			console.warn('Please enter task')
+		}
 	}
 }
 
