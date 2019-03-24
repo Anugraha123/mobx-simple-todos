@@ -1,28 +1,58 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
 
+import {observer} from 'mobx-react'
+
+@observer
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+
+	handleAddTodo = () => {
+		const task = prompt('Enter a new task for todos list')
+
+		this.props.store.addTodo(task)
+	}
+
+	handleComplete = (todo) => () => {
+		this.props.store.setComplete(todo)
+	}
+
+	render() {
+		const {store} = this.props
+
+		console.log(store)
+
+		return (
+			<div className="App">
+				<h1>
+					{store.report}
+				</h1>
+
+				{
+					store.todos.map((todo, idx) => {
+						return (
+							<li key={'task-' + idx}>
+								{todo.task}
+
+								<input
+									type='checkbox'
+									disabled={todo.completed}
+									checked={todo.completed}
+									onChange={this.handleComplete(todo)}
+								/>
+							</li>
+						)
+					})
+				}
+
+				<br/>
+
+				<button
+					onClick={this.handleAddTodo}
+				>
+					Add
+				</button>
+			</div>
+		);
+	}
 }
 
 export default App;
